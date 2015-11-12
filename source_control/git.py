@@ -707,6 +707,11 @@ def main():
         set_git_ssh(ssh_wrapper, key_file, ssh_opts)
         module.add_cleanup_file(path=ssh_wrapper)
 
+    # make sure no locales are used (that could break output matching)
+    os.environ["LANG"] = "C"
+    os.environ["LC_ALL"] = "C"
+    os.environ["LC_MESSAGES"] = "C"
+
     # add the git repo's hostkey 
     if module.params['ssh_opts'] is not None:
         if not "-o StrictHostKeyChecking=no" in module.params['ssh_opts']:
